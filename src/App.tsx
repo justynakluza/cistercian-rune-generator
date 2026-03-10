@@ -1,5 +1,5 @@
-import { NumericFormView } from './components/NumericFormView.tsx'
+import { RuneDisplay } from './features/runes'
 
 export const App = () => {
-  return <NumericFormView />
+  return <RuneDisplay />
 }
