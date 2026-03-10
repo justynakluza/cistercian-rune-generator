@@ -1,6 +1,7 @@
 import runeReferenceImage from '../../../assets/runes-reference.png'
 import { ChevronDownIcon } from '../../../shared/ui'
 import { RUNE_ENTRIES } from '../utils'
+import { RuneSvg } from './rune-svg'
 
 export const RuneSidebarPanels = () => {
   return (
@@ -26,19 +27,7 @@ export const RuneSidebarPanels = () => {
           <div className="mt-3 grid grid-cols-9 gap-1.5">
             {RUNE_ENTRIES.map((entry) => (
               <div key={entry.value} className="rounded border border-slate-200 bg-white p-1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" width="36" height="54" className="mx-auto">
-                  {entry.strokes.map((points: string, index: number) => (
-                    <polyline
-                      key={`${entry.value}-${index}`}
-                      points={points}
-                      fill="none"
-                      stroke="#1f2937"
-                      strokeWidth={4}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  ))}
-                </svg>
+                <RuneSvg strokes={entry.strokes} width={36} height={54} className="mx-auto" />
                 <p className="mt-0.5 text-center text-[10px] leading-none text-slate-600">{entry.value}</p>
               </div>
             ))}

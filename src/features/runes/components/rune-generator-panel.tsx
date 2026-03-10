@@ -1,34 +1,28 @@
-import { type RefObject } from 'react'
+import { useRef } from 'react'
 import { cn } from '../../../shared/utils/class-names'
 import { type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps } from '../types'
+import { DownloadRuneButton } from './download-rune-button'
+import { RuneSvg } from './rune-svg'
 
 const RUNE_MIN_VALUE = 1
 const RUNE_MAX_VALUE = 9999
 
 interface RuneGeneratorPanelProps {
-  value: string
+  numericValue: number | null
   valueInputProps: RuneValueInputProps
   onValueInput: RuneValueInputHandler
   strokes: RuneStrokes | null
-  svgRef: RefObject<SVGSVGElement | null>
-  isDownloadDisabled: boolean
-  isDownloading: boolean
-  onDownloadClick: () => Promise<void>
   error?: string
 }
 
 export const RuneGeneratorPanel = ({
-  value,
+  numericValue,
   valueInputProps,
   onValueInput,
   error,
   strokes,
-  svgRef,
-  isDownloadDisabled,
-  isDownloading,
-  onDownloadClick,
 }: RuneGeneratorPanelProps) => {
-  const isDisabled = isDownloadDisabled || isDownloading
+  const svgRef = useRef<SVGSVGElement>(null)
 
   return (
     <section className="w-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm panel:flex panel:justify-center panel:h-[640px]">
@@ -46,7 +40,6 @@ export const RuneGeneratorPanel = ({
             min={RUNE_MIN_VALUE}
             max={RUNE_MAX_VALUE}
             placeholder="e.g. 7, 40, 500, 9000"
-            value={value}
             aria-invalid={Boolean(error)}
             aria-describedby="rune-value-message"
             {...valueInputProps}
@@ -64,19 +57,7 @@ export const RuneGeneratorPanel = ({
         <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 p-4 panel:flex-1">
           <div className="mx-auto flex h-full min-h-[360px] w-[240px] items-center justify-center">
             {strokes ? (
-              <svg ref={svgRef} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" width="240" height="360">
-                {strokes.map((points: string) => (
-                  <polyline
-                    key={points}
-                    points={points}
-                    fill="none"
-                    stroke="#1f2937"
-                    strokeWidth={4}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ))}
-              </svg>
+              <RuneSvg ref={svgRef} strokes={strokes} width={240} height={360} />
             ) : (
               <p className="text-center text-sm text-slate-600">Enter a number to see its Cistercian rune.</p>
             )}
@@ -84,19 +65,7 @@ export const RuneGeneratorPanel = ({
         </div>
 
         <div className="mt-3 flex justify-start">
-          <button
-            type="button"
-            disabled={isDisabled}
-            onClick={onDownloadClick}
-            className={cn(
-              'inline-flex items-center justify-center rounded-md border px-3.5 py-2 text-sm font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-700',
-              isDisabled
-                ? 'cursor-not-allowed border-zinc-800 bg-zinc-800 text-zinc-400'
-                : 'border-neutral-950 bg-neutral-950 text-neutral-100 hover:border-black hover:bg-black hover:opacity-90',
-            )}
-          >
-            {isDownloading ? 'Downloading...' : 'Download SVG'}
-          </button>
+          <DownloadRuneButton svgRef={svgRef} numericValue={numericValue} />
         </div>
       </div>
     </section>
