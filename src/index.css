@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-panel: 1000px;
+}
+
 body {
   margin: 0;
   min-width: 320px;
