@@ -1,12 +1,8 @@
-import { type RuneEntry } from '../types'
 import runeReferenceImage from '../../../assets/runes-reference.png'
 import { ChevronDownIcon } from '../../../shared/ui'
+import { RUNE_ENTRIES } from '../utils'
 
-interface RuneSidebarPanelsProps {
-  runeEntries: RuneEntry[]
-}
-
-export const RuneSidebarPanels = ({ runeEntries }: RuneSidebarPanelsProps) => {
+export const RuneSidebarPanels = () => {
   return (
     <div className="flex flex-col gap-5">
       <section className="w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm h-fit">
@@ -28,7 +24,7 @@ export const RuneSidebarPanels = ({ runeEntries }: RuneSidebarPanelsProps) => {
             <ChevronDownIcon className="group-open:rotate-180" />
           </summary>
           <div className="mt-3 grid grid-cols-9 gap-1.5">
-            {runeEntries.map((entry) => (
+            {RUNE_ENTRIES.map((entry) => (
               <div key={entry.value} className="rounded border border-slate-200 bg-white p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" width="36" height="54" className="mx-auto">
                   {entry.strokes.map((points: string, index: number) => (

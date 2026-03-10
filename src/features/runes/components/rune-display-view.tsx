@@ -1,14 +1,13 @@
 import { useRuneDisplayView } from '../hooks/use-rune-display-view'
 import { RuneGeneratorPanel } from './rune-generator-panel'
 import { RuneSidebarPanels } from './rune-sidebar-panels'
-import { type RuneEntry, type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps } from '../types'
+import { type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps } from '../types'
 
 interface RuneDisplayViewProps {
   value: string
   valueInputProps: RuneValueInputProps
   onValueInput: RuneValueInputHandler
   strokes: RuneStrokes | null
-  runeEntries: RuneEntry[]
   error?: string
 }
 
@@ -18,7 +17,6 @@ export const RuneDisplayView = ({
   onValueInput,
   error,
   strokes,
-  runeEntries,
 }: RuneDisplayViewProps) => {
   const { svgRef, isDownloading, isDownloadDisabled, onDownloadClick } = useRuneDisplayView({ value, error })
 
@@ -45,7 +43,7 @@ export const RuneDisplayView = ({
           onDownloadClick={onDownloadClick}
         />
 
-        <RuneSidebarPanels runeEntries={runeEntries} />
+        <RuneSidebarPanels />
       </div>
     </div>
   )

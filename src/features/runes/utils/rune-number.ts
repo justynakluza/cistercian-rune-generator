@@ -1,4 +1,4 @@
-import { type RuneStrokes } from '../types'
+import { type RuneEntry, type RuneStrokes } from '../types'
 
 const RUNE_COMPONENT_VALUES = [
   1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -128,3 +128,8 @@ export const getRuneStrokesForNumber = (n: number): RuneStrokes => {
 
   return [baseStroke, ...componentStrokes]
 }
+
+export const RUNE_ENTRIES: RuneEntry[] = REFERENCE_COMPONENTS.map((entryValue) => ({
+  value: entryValue,
+  strokes: getRuneStrokesForNumber(entryValue),
+}))

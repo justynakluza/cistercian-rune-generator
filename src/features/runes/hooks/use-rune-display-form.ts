@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { REFERENCE_COMPONENTS, getRuneStrokesForNumber } from '../utils'
-import { type RuneEntry, type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps } from '../types'
+import { getRuneStrokesForNumber } from '../utils'
+import { type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps } from '../types'
 
 const runeFormSchema = z.object({
   value: z
@@ -27,7 +27,6 @@ export interface UseRuneDisplayFormResult {
   valueInputProps: RuneValueInputProps
   onValueInput: RuneValueInputHandler
   strokes: RuneStrokes | null
-  runeEntries: RuneEntry[]
   error?: string
 }
 
@@ -68,15 +67,6 @@ export const useRuneDisplayForm = (): UseRuneDisplayFormResult => {
     setHasInvalidNumberInput(input.validity.badInput)
   }
 
-  const runeEntries = useMemo(
-    () =>
-      REFERENCE_COMPONENTS.map((entryValue) => ({
-        value: entryValue,
-        strokes: getRuneStrokesForNumber(entryValue),
-      })),
-    [],
-  )
-
   const numericValue = useMemo(() => {
     const parsed = runeFormSchema.safeParse({ value })
     if (!parsed.success) {
@@ -103,6 +93,5 @@ export const useRuneDisplayForm = (): UseRuneDisplayFormResult => {
     onValueInput,
     error,
     strokes,
-    runeEntries,
   }
 }
