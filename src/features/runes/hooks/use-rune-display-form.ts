@@ -8,7 +8,7 @@ import { type RuneStrokes, type RuneValueInputHandler, type RuneValueInputProps 
 const runeFormSchema = z.object({
   value: z
     .string()
-    .regex(/^\d*$|^$/, 'Only digits are allowed.')
+    .regex(/^\d*$/, 'Only digits are allowed.')
     .transform((value) => {
       if (value === '') {
         return undefined
@@ -23,7 +23,7 @@ type RuneFormValues = z.input<typeof runeFormSchema>
 type RuneFormOutput = z.output<typeof runeFormSchema>
 
 export interface UseRuneDisplayFormResult {
-  value: string
+  numericValue: number | null
   valueInputProps: RuneValueInputProps
   onValueInput: RuneValueInputHandler
   strokes: RuneStrokes | null
@@ -68,13 +68,12 @@ export const useRuneDisplayForm = (): UseRuneDisplayFormResult => {
   }
 
   const numericValue = useMemo(() => {
-    const parsed = runeFormSchema.safeParse({ value })
-    if (!parsed.success) {
+    if (hasInvalidNumberInput || value === '' || errors.value) {
       return null
     }
 
-    return parsed.data.value ?? null
-  }, [value])
+    return Number.parseInt(value, 10)
+  }, [value, hasInvalidNumberInput, errors.value])
 
   const strokes = useMemo(() => {
     if (numericValue === null) {
@@ -88,7 +87,7 @@ export const useRuneDisplayForm = (): UseRuneDisplayFormResult => {
   const error = hasInvalidNumberInput ? 'Only digits are allowed.' : value === '' ? undefined : errors.value?.message
 
   return {
-    value,
+    numericValue,
     valueInputProps,
     onValueInput,
     error,
